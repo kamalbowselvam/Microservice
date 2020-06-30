@@ -27,11 +27,11 @@ func main() {
 	}
 
 	go func(){
+		l.Println("Server started on port :9090")
 		err := s.ListenAndServe()
 		if err != nil {
 			l.Fatal(err)
 		}
-		l.Println("Server started on port :9090")
 	}()
 
 	sigChan := make(chan os.Signal)
