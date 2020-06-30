@@ -1,46 +1,42 @@
 package main
 
 import (
-	"os/signal"
 	"context"
-	"time"
+	"github.com/gorilla/mux"
 	"github.com/kamalselvam/Microservice/handlers"
 	"log"
-	"os"
 	"net/http"
-	"github.com/gorilla/mux"
+	"os"
+	"os/signal"
+	"time"
 )
 
 func main() {
-	l := log.New(os.Stdout,"product-api",log.LstdFlags)
+	l := log.New(os.Stdout, "product-api", log.LstdFlags)
 
 	ph := handlers.NewProduct(l)
-	
 	sm := mux.NewRouter()
 
 	getRouter := sm.Methods(http.MethodGet).Subrouter()
-	getRouter.HandleFunc("/",ph.GetProducts)
+	getRouter.HandleFunc("/", ph.GetProducts)
 
 	putRouter := sm.Methods(http.MethodPut).Subrouter()
-	putRouter.HandleFunc("/{id:[0-9]+}",ph.UpdateProducts)
+	putRouter.HandleFunc("/{id:[0-9]+}", ph.UpdateProducts)
 	putRouter.Use(ph.MiddlewareProductValidation)
 
 	postRouter := sm.Methods(http.MethodPost).Subrouter()
-	postRouter.HandleFunc("/",ph.AddProduct)
+	postRouter.HandleFunc("/", ph.AddProduct)
 	postRouter.Use(ph.MiddlewareProductValidation)
 
-
-	//sm.Handle("/product",ph)
-
 	s := &http.Server{
-		Addr: ":9090",
-		Handler: sm,
-		IdleTimeout: 120*time.Second,
-		ReadTimeout: 1 * time.Second,
-		WriteTimeout: 1* time.Second,
+		Addr:         ":9090",
+		Handler:      sm,
+		IdleTimeout:  120 * time.Second,
+		ReadTimeout:  1 * time.Second,
+		WriteTimeout: 1 * time.Second,
 	}
 
-	go func(){
+	go func() {
 		l.Println("Server started on port :9090")
 		err := s.ListenAndServe()
 		if err != nil {
@@ -52,10 +48,10 @@ func main() {
 	signal.Notify(sigChan, os.Interrupt)
 	signal.Notify(sigChan, os.Kill)
 
-	sig := <- sigChan
+	sig := <-sigChan
 	l.Println("Recieved terminate, graceful shutdown", sig)
 
-	tc, cancel := context.WithTimeout(context.Background(), 30* time.Second)
-	defer cancel() 
+	tc, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
 	s.Shutdown(tc)
 }
