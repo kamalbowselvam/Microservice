@@ -26,6 +26,7 @@ func (p *Product) FromJSON(r io.Reader) error {
 type Products []*Product
 
 func (p *Products) ToJSON(w io.Writer) error {
+
 	e := json.NewEncoder(w)
 	return e.Encode(p)
 }

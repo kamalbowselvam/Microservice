@@ -2,13 +2,13 @@ package main
 
 import (
 	"context"
-	"github.com/gorilla/mux"
-	"github.com/kamalselvam/Microservice/handlers"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"time"
+	"github.com/gorilla/mux"
+	"github.com/kamalselvam/Microservice/handlers"
 )
 
 func main() {
