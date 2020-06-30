@@ -104,12 +104,8 @@ func (p *Products) updateProduct(id int, rw http.ResponseWriter, r *http.Request
 		return
 	}
 
-
 	if err != nil {
 		http.Error(rw, "Product Not Found ", http.StatusInternalServerError)
 		return
 	}
-
-
-
 }
