@@ -9,10 +9,12 @@ import (
 	"time"
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/gorilla/mux"
-	"github.com/kamalselvam/Microservice/handlers"
+	"github.com/kamalbowselvam/Microservice/product-api/handlers"
 )
 
 func main() {
+
+	
 	l := log.New(os.Stdout, "product-api", log.LstdFlags)
 
 	ph := handlers.NewProduct(l)
@@ -66,4 +68,5 @@ func main() {
 	tc, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 	s.Shutdown(tc)
+	
 }

@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 	"github.com/gorilla/mux"
-	"github.com/kamalselvam/Microservice/data"
+	"github.com/kamalbowselvam/Microservice/product-api/data"
 )
 // swagger:route DELETE /products/{id} products deleteProduct
 // Update a products details

@@ -5,7 +5,7 @@ package handlers
 import (
 	"context"
 	"fmt"
-	"github.com/kamalselvam/Microservice/data"
+	"github.com/kamalbowselvam/Microservice/product-api/data"
 	"net/http"
 )
 

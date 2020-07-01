@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"github.com/kamalselvam/Microservice/data"
+	"github.com/kamalbowselvam/Microservice/product-api/data"
 	"net/http"
 )
 
