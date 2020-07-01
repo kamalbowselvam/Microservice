@@ -2,8 +2,6 @@ package handlers
 
 import (
 	"net/http"
-	"strconv"
-	"github.com/gorilla/mux"
 	"github.com/kamalbowselvam/Microservice/product-api/data"
 )
 
@@ -15,31 +13,31 @@ import (
 //  404: errorResponse
 //  422: errorValidation
 
+// swagger:route PUT /products products updateProduct
+// Update a products details
+//
+// responses:
+//	201: noContentResponse
+//  404: errorResponse
+//  422: errorValidation
+
 // Update handles PUT requests to update products
-func (p *Products) UpdateProducts(rw http.ResponseWriter, r *http.Request) {
+func (p *Products) Update(rw http.ResponseWriter, r *http.Request) {
+	rw.Header().Add("Content-Type", "application/json")
 
-	vars := mux.Vars(r)
-	id, err := strconv.Atoi(vars["id"])
-
-	if err != nil {
-
-		http.Error(rw, "unable to convert id", http.StatusBadRequest)
-		return
-	}
-
-	p.l.Println("Handle PUT Products")
-
+	// fetch the product from the context
 	prod := r.Context().Value(KeyProduct{}).(data.Product)
+	p.l.Println("[DEBUG] updating record id", prod.ID)
 
-	p.l.Printf("%#v", prod)
-	err = data.UpdateProduct(id, &prod)
-	if err == data.ErrorProductNotFound {
-		http.Error(rw, "Product Not Found ", http.StatusNotFound)
+	err := data.UpdateProduct(prod)
+	if err == data.ErrProductNotFound {
+		p.l.Println("[ERROR] product not found", err)
+
+		rw.WriteHeader(http.StatusNotFound)
+		data.ToJSON(&GenericError{Message: "Product not found in database"}, rw)
 		return
 	}
 
-	if err != nil {
-		http.Error(rw, "Product Not Found ", http.StatusInternalServerError)
-		return
-	}
+	// write the no content success header
+	rw.WriteHeader(http.StatusNoContent)
 }

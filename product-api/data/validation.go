@@ -3,6 +3,7 @@ package data
 import (
 	"fmt"
 	"regexp"
+
 	"github.com/go-playground/validator/v10"
 )
 
