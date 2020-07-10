@@ -3,8 +3,7 @@ package data
 import (
 	"fmt"
 	"regexp"
-
-	"github.com/go-playground/validator/v10"
+	"github.com/go-playground/validator"
 )
 
 // ValidationError wraps the validators FieldError so we do not
@@ -66,14 +65,20 @@ func NewValidation() *Validation {
 //			fmt.Println()
 //	}
 func (v *Validation) Validate(i interface{}) ValidationErrors {
-	errs := v.validate.Struct(i).(validator.ValidationErrors)
+	errs := v.validate.Struct(i)  //.(validator.ValidationErrors)
 
-	if len(errs) == 0 {
+	if errs == nil {
 		return nil
 	}
 
+	var newerr validator.ValidationErrors
+
+	if errs != nil {
+		newerr = errs.(validator.ValidationErrors)
+	}
+
 	var returnErrs []ValidationError
-	for _, err := range errs {
+	for _, err := range newerr {
 		// cast the FieldError into our ValidationError and append to the slice
 		ve := ValidationError{err.(validator.FieldError)}
 		returnErrs = append(returnErrs, ve)
@@ -82,6 +87,7 @@ func (v *Validation) Validate(i interface{}) ValidationErrors {
 	return returnErrs
 }
 
+// validateSKU
 func validateSKU(fl validator.FieldLevel) bool {
 	// SKU must be in the format abc-abc-abc
 	re := regexp.MustCompile(`[a-z]+-[a-z]+-[a-z]+`)
