@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/hashicorp/go-hclog"
-	protos "GitHub/Microservice/currency/protos/currency"
+	protos "github.com/kamalbowselvam/Microservice/currency/protos/currency"
 )
 
 
@@ -13,4 +13,15 @@ type Currency struct {
 }
 
 
-func (c* Currency) GetRate(ctx context.Context, req* protos.RateRequest)(*protos.RateResponse, error)
+func NewCurrency(l hclog.Logger) *Currency {
+
+	return &Currency{l}
+}
+
+func (c* Currency) GetRate(ctx context.Context, req* protos.RateRequest)(*protos.RateResponse, error) {
+
+	c.log.Info("Handle GetRate", "base", req.GetBase(), "destination", req.GetDestination())
+
+	return &protos.RateResponse{Rate: 0.5}, nil
+
+}

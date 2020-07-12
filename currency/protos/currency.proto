@@ -10,10 +10,10 @@ service Currency {
 
 message RateRequest {
 
-    string Base = 1;
-    string Destination = 2;
+    string base = 1;
+    string destination = 2;
 }
 
 message RateResponse {
-    float Rate = 1;
+    float rate = 1;
 }
