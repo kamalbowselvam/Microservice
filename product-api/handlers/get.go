@@ -1,8 +1,10 @@
 package handlers
 
 import (
-	"github.com/kamalbowselvam/Microservice/product-api/data"
+	"context"
 	"net/http"
+	protos "github.com/kamalbowselvam/Microservice/currency/protos/currency"
+	"github.com/kamalbowselvam/Microservice/product-api/data"
 )
 
 // swagger:route GET /products products listProducts
@@ -56,6 +58,22 @@ func (p *Products) ListSingle(rw http.ResponseWriter, r *http.Request) {
 		data.ToJSON(&GenericError{Message: err.Error()}, rw)
 		return
 	}
+
+	// get exchange rate 
+	rr := &protos.RateRequest{
+		Base: 		 ,
+		Destination: protos.Currencies(protos.Currencies_value["GBP"]),
+	}
+	resp, err := p.cc.GetRate(context.Background(), rr)
+
+	if err != nil {
+		p.l.Println("[Error getting new rate ]", err)
+		data.ToJSON(&GenericError{Message: err.Error()},rw)
+		return
+	}
+
+	prod.Price = prod.Price * resp.Rate
+
 
 	err = data.ToJSON(prod, rw)
 	if err != nil {

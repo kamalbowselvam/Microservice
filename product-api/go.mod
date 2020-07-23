@@ -12,7 +12,9 @@ require (
 	github.com/go-playground/validator/v10 v10.3.0 // indirect
 	github.com/gorilla/handlers v1.4.2
 	github.com/gorilla/mux v1.7.4
+	github.com/kamalbowselvam/Microservice/currency v0.0.0-20200712110916-8f236f4a59d3
 	github.com/stretchr/testify v1.6.1
 	golang.org/x/net v0.0.0-20200625001655-4c5254603344 // indirect
 	golang.org/x/text v0.3.3 // indirect
+	google.golang.org/grpc v1.30.0 // indirect
 )
